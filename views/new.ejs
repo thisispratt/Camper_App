@@ -1,4 +1,4 @@
-<%- include("partials/header.ejs") -%>
+<%- include("partials/header.ejs") %>
 <div class="container">
     <h1>CREATE NEW CAMPGROUND</h1>
     <form action="/campgrounds" method="POST">
@@ -9,12 +9,15 @@
             <input class="form-control" type="text" name="imageLink" placeholder="Image link">
         </div>
         <div class="form-group">
-            <button class="btn btn-info" type="submit">SUBMIT</button>
+            <input class="form-control" type="text" name="campgroundDescription" placeholder="Features of the campground!">
         </div>
+        <div class="form-group">
+            <button class="btn btn-info" type="submit">SUBMIT</button>
+        </div> 
     </form>
 
     <a href="/campgrounds"><button class="btn btn-info" type="button"> <- Go Back</button></a>
 </div>  
 
 
-<%- include("partials/footer.ejs") -%>
+<%- include("partials/footer.ejs") %>
