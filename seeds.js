@@ -61,7 +61,7 @@ function seedDB(){
         }
     });
 
-    //add few campgrounds
+
      
 
     
