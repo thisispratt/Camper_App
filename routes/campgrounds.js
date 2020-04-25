@@ -39,9 +39,18 @@ router.post("/campgrounds", isLoggedIn, function(req,res){
     var campgroundName = req.body.campgroundName;
     var campgroundImage = req.body.imageLink;
     var campgroundDescription = req.body.campgroundDescription;
-    
+    var authorObject = {
+        id: req.user._id,
+        username: req.user.username
+    };
+
     //add data to the database.
-    var newCampground = {title: campgroundName, img: campgroundImage, description: campgroundDescription};
+    var newCampground = {
+        title: campgroundName, 
+        img: campgroundImage, 
+        description: campgroundDescription,
+        author: authorObject
+    };
    
     Campground.create(
         newCampground,function(err,campground){
