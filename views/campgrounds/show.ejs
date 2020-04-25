@@ -1,16 +1,42 @@
 <%- include("../partials/header.ejs") %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <p>Yelpcamp</p>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        dummytext-1
+                    </li>
+                    <li class="list-group-item">
+                        dummytext-2
+                    </li>
+                    <li class="list-group-item">
+                        dummytext-3
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="img-thumbnail margin-bottom">
+                    <h1><%= campground.title %></h1>
 
-<h1><%= campground.title %></h1>
+                    <img class="show-img" src="<%= campground.img %>" alt="image">
+                    <p><%= campground.description %></p>
+                </div>
+                
+                 <div class="img-thumbnail margin-bottom">
+                    <a class="btn btn-info margin-bottom" href="/campgrounds/<%= campground._id %>/comments/new">Add Comment</a>
+                    <div class="row">
+                        <% campground.comments.forEach(function(comment){ %>
+                            <div class="col-md-12">
+                                <h5><%= comment.author %></h5>
+                                <p> <%=comment.text %></p>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
 
-<img src="<%= campground.img %>" alt="image">
-<p><%= campground.description %></p>
-
-<a class="btn btn-info" href="/campgrounds/<%= campground._id %>/comments/new">Add Comment</a>
-<div>
-    <% campground.comments.forEach(function(comment){ %>
-       
-        <p> <strong><%= comment.author %></strong> : <%=comment.text %> </p>
-       
-   <% }); %>
-</div>
+        </div>
+        
+    </div>
 <%- include("../partials/footer.ejs") %>

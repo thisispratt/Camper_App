@@ -3,6 +3,8 @@ var app = express();
 var mongoose = require("mongoose");
 var seedDB = require("./seeds.js");
 
+app.use(express.static("public"));
+
 mongoose.connect("mongodb://localhost/Yelp_camp", {useNewUrlParser: true,  useUnifiedTopology: true});
 //bodyparser helps in retrieving the data from the form(builds the req.body object, later it can be used to pick the form data)
 var bodyParser = require("body-parser");
