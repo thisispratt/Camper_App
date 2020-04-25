@@ -2,7 +2,9 @@ var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
 var seedDB = require("./seeds.js");
-
+var passport = require("passport");
+var localStrategy = require("passport-local");
+var expressSession = require("express-session");
 app.use(express.static("public"));
 
 mongoose.connect("mongodb://localhost/Yelp_camp", {useNewUrlParser: true,  useUnifiedTopology: true});
@@ -16,6 +18,29 @@ seedDB();
 //GETTING THE MODEL FROM OTHER FILES INSIDE MODELS FOLDER.(THIS INCREASES REUSABILITY AND MINIMIZES THE APP.JS FILE) 
 var Campground = require("./models/campgroundSchema.js");
 var Comment = require("./models/comments.js");
+var User = require("./models/user.js");
+
+//=========================
+//PASSPORT CONFIG.
+//========================
+app.use(expressSession({
+    secret: "Quick salt to generate a hash",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+app.use(function(req, res, next){
+    //this would help us to pass req.user to every route.So that it can be used by the navbar. (acts as middleware)
+    res.locals.currentUser = req.user;
+    next();
+});
 
 //==========================
 //      CAMPGROUND ROUTES
@@ -30,6 +55,7 @@ app.get("/",function(req,res){
 
 //INDEX ROUTE
 app.get("/campgrounds",function(req,res){
+    
     Campground.find({},function(err, allCampgrounds){
         if(err){
             console.log("Error occured!" + err);
@@ -93,7 +119,7 @@ app.get("/campgrounds/:id",function(req,res){
 
 //NEW ROUTE
 
-app.get("/campgrounds/:id/comments/new", function(req,res){
+app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req,res){
 
     //find the particular campground. and then pass it to the comments-new
     Campground.findById(req.params.id, function(err, campground){
@@ -110,7 +136,7 @@ app.get("/campgrounds/:id/comments/new", function(req,res){
 
 //CREATE ROUTE
 
-app.post("/campgrounds/:id/comments", function(req,res){
+app.post("/campgrounds/:id/comments",isLoggedIn, function(req,res){
     
     var newComment = {
         text: req.body.text,
@@ -142,6 +168,63 @@ app.post("/campgrounds/:id/comments", function(req,res){
     });
     
 });
+
+//==================
+//AUTH ROUTES
+//==================
+
+//sign-up form
+app.get("/register", function(req,res){
+    res.render("register.ejs");
+});
+
+//handle sign-up logic
+app.post("/register", function(req,res){
+
+    var newUser = new User({username: req.body.username});
+
+    User.register(newUser, req.body.password, function(err,user){
+        if(err){
+            console.log(err);
+            res.redirect("/register");
+        }
+        else{
+            passport.authenticate("local")(req, res, function(){
+                res.redirect("/campgrounds");
+            });
+            
+        }
+    });
+});
+
+//login form
+
+app.get("/login", function(req,res){
+
+    res.render("login.ejs");
+});
+
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"
+}), function(req,res){
+    
+});
+
+//Logout Route
+
+app.get("/logout", function(req,res){
+    req.logout();
+    res.redirect("/campgrounds");
+
+});
+
+function isLoggedIn(req,res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 //server
 app.listen(3000,function(){
