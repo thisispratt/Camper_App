@@ -1,6 +1,7 @@
 var express         = require("express"),
     mongoose        = require("mongoose"),
-    seedDB          = require("./seeds.js");
+    seedDB          = require("./seeds.js"),
+    flash           = require("connect-flash");
 
 var passport        = require("passport"),
     localStrategy   = require("passport-local"),
@@ -19,6 +20,8 @@ var app = express();
 app.use(express.static("public"));
 
 app.use(methodOverride("_method"));
+
+app.use(flash());
 
 //bodyparser helps in retrieving the data from the form(builds the req.body object, later it can be used to pick the form data)
 app.use(bodyParser.urlencoded({extended: false}));
@@ -55,6 +58,9 @@ passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next){
     //this would help us to pass req.user to every route.So that it can be used by the navbar. (acts as middleware)
     res.locals.currentUser = req.user;
+    res.locals.errMessage = req.flash("errMessage");
+    res.locals.successMessage = req.flash("successMessage");
+
     next();
 });
 
@@ -63,6 +69,6 @@ app.use(commentsRoutes);
 app.use(authRoutes);
 
 //server
-app.listen(3000,function(){
+app.listen(process.env.PORT || 3000,function(){
     console.log("yelpcamp served!");
 });
