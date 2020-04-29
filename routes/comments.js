@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campgroundSchema.js");
 var Comment = require("../models/comments.js");
-
+var User = require("../models/user.js");
 //============================
 //      COMMENTS ROUTES
 //============================
@@ -27,10 +27,15 @@ router.get("/campgrounds/:id/comments/new", isLoggedIn, function(req,res){
 //CREATE ROUTE
 
 router.post("/campgrounds/:id/comments",isLoggedIn, function(req,res){
+
+    //req.user contains the id and username of the user that is logged in.
     
     var newComment = {
         text: req.body.text,
-        author: req.body.author
+        author: {
+            id: req.user._id,
+            username: req.user.username
+        }
     }
     //extract the form data.
     //find the campground by Id. 

@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 mongoose.connect("mongodb://localhost/Yelp_camp", {useNewUrlParser: true,  useUnifiedTopology: true});
 
 //This is used to add some starter data directly to server. Thus the name Seed.
-seedDB();
+// seedDB();
 
 //GETTING THE MODEL FROM OTHER FILES INSIDE MODELS FOLDER.(THIS INCREASES REUSABILITY AND MINIMIZES THE APP.JS FILE) 
 var Campground = require("./models/campgroundSchema.js");
