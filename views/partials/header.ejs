@@ -8,6 +8,32 @@
     <title>YelpCamp</title>
 </head>
 <body>
-    <nav class="navbar navbar-light margin-bottom" style="background-color: #138496;">
-        <a class="navbar-brand" href="/">YelpCamp</a>
-    </nav>
+    
+        <nav class="navbar navbar-expand-lg navbar-light margin-bottom" style="background-color: #138496;">
+            <div class="container">
+                <a class="navbar-brand" href="/">YelpCamp</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-flex justify-content-lg-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                      <% if(currentUser == undefined){ %>
+                        <li class="nav-item">
+                          <a class="nav-link" href="login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/register">SignUp</a>
+                        </li>
+                      <% }else{ %>
+                        <li class="navbar-text">
+                          Signed in as: <%= currentUser.username %>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/logout"> Logout</a>
+                        </li>
+                      <% } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
