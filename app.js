@@ -29,7 +29,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 //====================
 //  DATABASE SETUP
 //====================
-mongoose.connect("mongodb://localhost/Yelp_camp", {useNewUrlParser: true,  useUnifiedTopology: true});
+var DATABASEURL = process.env.DATABASEURL || "mongodb://localhost/Yelp_camp";
+
+// mongoose.connect("mongodb://localhost/Yelp_camp", {useNewUrlParser: true,  useUnifiedTopology: true});
+mongoose.connect(DATABASEURL, {useNewUrlParser: true,  useUnifiedTopology: true});
 
 //This is used to add some starter data directly to server. Thus the name Seed.
 // seedDB();
