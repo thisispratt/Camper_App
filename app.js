@@ -4,7 +4,8 @@ var express         = require("express"),
 
 var passport        = require("passport"),
     localStrategy   = require("passport-local"),
-    expressSession  = require("express-session");
+    expressSession  = require("express-session"),
+    methodOverride = require("method-override");
     
 var bodyParser      = require("body-parser");
 
@@ -16,6 +17,8 @@ var campgroundRoutes = require("./routes/campgrounds.js"),
 var app = express();
 
 app.use(express.static("public"));
+
+app.use(methodOverride("_method"));
 
 //bodyparser helps in retrieving the data from the form(builds the req.body object, later it can be used to pick the form data)
 app.use(bodyParser.urlencoded({extended: false}));

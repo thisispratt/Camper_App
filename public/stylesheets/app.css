@@ -5,3 +5,6 @@
 .margin-bottom{
     margin-bottom: 1.5vw;
 }
+.delete-form{
+    display: inline;
+}
