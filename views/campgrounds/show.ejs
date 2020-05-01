@@ -18,7 +18,7 @@
             <div class="col-md-9">
                 <div class="img-thumbnail margin-bottom">
                     <h1><%= campground.title %></h1>
-
+                    <h6>Submitted by: <%= campground.author.username %></h6>
                     <img class="show-img" src="<%= campground.img %>" alt="image">
                     <p><%= campground.description %></p>
                 </div>
