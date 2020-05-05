@@ -94,11 +94,6 @@ router.get("/campgrounds/:id/edit", middleware.checkCampgroundOwnership, functio
             res.render("campgrounds/edit.ejs", {campground: campground});
         }
     });
-    //else redirect to login form.
-    //if logged in find the campground.
-    //check if the user id equals campground author id
-    //if not redirect back.
-    //if yes show the edit page.
     
 });
 
@@ -125,9 +120,11 @@ router.put("/campgrounds/:id", middleware.checkCampgroundOwnership, function(req
 router.delete("/campgrounds/:id", middleware.checkCampgroundOwnership, function(req,res){
     Campground.findByIdAndDelete(req.params.id, function(err){
         if(err){
+            req.flash("errMessage", "Error deleting campground!");
             res.redirect("/campgrounds");
         }
         else{
+            req.flash("successMessage", "Campground Deleted!");
             res.redirect("/campgrounds");
         }
     })

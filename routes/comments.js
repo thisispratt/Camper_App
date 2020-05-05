@@ -50,12 +50,14 @@ router.post("/campgrounds/:id/comments",middleware.isLoggedIn, function(req,res)
             Comment.create(newComment,function(err,comment){
                 if(err){
                     console.log(err);
+                    req.flash("errMessage", "Something went wrong!");
                     res.redirect("/campgrounds");
                 }
                 else{
                     
                     campground.comments.push(comment);
                     campground.save();
+                    req.flash("successMessage", "You commented just now!");
                     res.redirect("/campgrounds/"+req.params.id);
                 }
             });
@@ -100,12 +102,14 @@ router.delete("/campgrounds/:id/comments/:comment_id", middleware.checkCommentOw
     Comment.findByIdAndDelete(req.params.comment_id, function(err){
         if(err){
             console.log(err);
+            req.flash("errMessage", "Something went wrong!");
             res.redirect("/campgrounds/"+req.params.id);
         }
         else{
+            req.flash("successMessage", "You deleted a comment!");
             res.redirect("/campgrounds/"+req.params.id);
         }
-    })
+    });
 });
 
 

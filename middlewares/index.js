@@ -8,6 +8,7 @@ var middlewareObj = {
         if(req.isAuthenticated()){
             return next();
         }
+        req.flash("errMessage", "Please Login first!");
         res.redirect("/login");
     },
     checkCampgroundOwnership: function(req, res, next){
@@ -17,6 +18,7 @@ var middlewareObj = {
             Campground.findById(req.params.id, function(err, campground){
                 if(err){
                     console.log(err);
+                    req.flash("errMessage", "Campground not found!");
                     res.redirect("back");
                 }
                 else{
@@ -25,6 +27,7 @@ var middlewareObj = {
                         next();
                     }
                     else{
+                        req.flash("errMessage", "Not permitted!")
                         res.redirect("back");
                     }
                 
@@ -32,6 +35,7 @@ var middlewareObj = {
             });
         }
         else{
+            req.flash("errMessage", "You need to Log-In");
             res.redirect("/login");
         }
     },
@@ -49,12 +53,14 @@ var middlewareObj = {
                         next();
                     }
                     else{
+                        req.flash("errMessage", "Not permitted!");
                         res.redirect("back");
                     }
                 }
             });
         }
         else{
+            req.flash("errMessage", "Login in first!");
             res.redirect("/login");
         }
     }
